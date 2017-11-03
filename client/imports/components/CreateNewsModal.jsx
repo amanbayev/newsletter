@@ -1,14 +1,36 @@
 import React, { Component } from 'react';
 
+import CKEditor from "react-ckeditor-component";
+
 export default class CreateNewsModal extends Component {
   constructor(props) {
     super(props)
+    this.updateContent = this.updateContent.bind(this);
     this.state = {
       name: '',
       date: '',
-      body: '',
+      content: 'content',
       url: ''
     }
+  }
+  updateContent(newContent) {
+    this.setState({
+      content: newContent
+    })
+  }
+  onChange(evt){
+    // console.log("onChange fired with event info: ", evt);
+    var newContent = evt.editor.getData();
+    this.setState({
+      content: newContent
+    })
+  }
+  onBlur(evt){
+    // window blurred
+  }
+
+  afterPaste(evt){
+    // after pase happened
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -35,7 +57,15 @@ export default class CreateNewsModal extends Component {
                 </div>
                 <div className="form-group">
                   <label>Текст новости</label>
-                  <textarea className="form-control" placeholder="Текст" />
+                  <CKEditor
+                    activeClass="p10"
+                    content={this.state.content}
+                    events={{
+                      "blur": this.onBlur.bind(this),
+                      "afterPaste": this.afterPaste.bind(this),
+                      "change": this.onChange.bind(this)
+                    }}
+                   />
                 </div>
                 <div className="btn-group">
                   <button type="button" className="btn btn-danger" data-dismiss="modal">Закрыть</button>

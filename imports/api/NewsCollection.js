@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 
 export const News = new Mongo.Collection('News');
+import { Images } from './NewsImagesCollection.js'
 
 if (Meteor.isServer) {
   // This code only runs on the server
@@ -9,9 +10,26 @@ if (Meteor.isServer) {
   });
 
   Meteor.methods({
-    'createNews':function(newsletterNew){
-      newsletterNew.active = true;
-      return News.insert(newsletterNew);
+    'createNews':function(newNewsItem){
+      newNewsItem.active = true;
+
+      const upload = Images.insert({
+        file: newNewsItem.image,
+        streams: 'dynamic',
+        chunkSize: 'dynamic'
+      }, false);
+
+      upload.on('end', function (error, fileObj) {
+        if (error) {
+          console.log('Error during upload: ' + error);
+          return error;
+        } else {
+          console.log('File "' + fileObj.name + '" successfully uploaded');
+          return News.insert(newNewsItem);
+        }
+      });
+
+      upload.start();
     },
     'deleteNews':function(newsletterId) {
       News.update({_id:newsletterId}, {$set:{

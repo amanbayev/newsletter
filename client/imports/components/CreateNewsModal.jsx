@@ -15,7 +15,7 @@ export default class CreateNewsModal extends Component {
     this.state = {
       name: '',
       date: moment(),
-      content: 'content',
+      content: 'Описание новости',
       image: '',
       url: ''
     }
@@ -47,8 +47,17 @@ export default class CreateNewsModal extends Component {
   handleSubmit(e) {
     e.preventDefault();
     let newNews = this.state
+    newNews.date = moment(this.state.date).format('DD.MM.YYYY')
     console.log("submit")
     console.log(newNews)
+    Meteor.call("createNews", newNews, function(error, result){
+      if(error){
+        console.log("error", error);
+      }
+      if(result){
+         console.log(result)
+      }
+    });
   }
   render() {
     return (
@@ -76,7 +85,7 @@ export default class CreateNewsModal extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  <ImageCropperComponent />
+                  <ImageCropperComponent context={this} />
                 </div>
                 <div className="form-group">
                   <label>Ссылка внешнаяя (необязательно)</label>

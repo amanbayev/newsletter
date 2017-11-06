@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import '/imports/api/NewslettersCollection.js'
 import '/imports/api/NewsCollection.js'
+import '/imports/api/NewsImagesCollection.js'
 
 Meteor.startup(() => {
   // code to run on server at startup

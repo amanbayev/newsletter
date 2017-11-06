@@ -8,9 +8,7 @@ import {mfUploadFile, dataURLtoBlob, fileToBinaryString} from '/client/imports/g
 export default class ImageCropperComponent extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      image: 'http://via.placeholder.com/640x360/'
-    }
+    // this.props.context.
   }
   _crop(){
     // image in dataUrl
@@ -24,16 +22,19 @@ export default class ImageCropperComponent extends Component {
     let stateName = 'image'
     currentCanvas.toBlob(blob => {
       fileToBinaryString(blob, binaryString => {
-        this.setState({
+        this.props.context.setState({
           [stateName]: currentCanvas.toDataURL(),
           [`binary${stateName.capitalize()}`]: binaryString
         });
       });
     });
-    // this.setState({image: this.refs.cropper.getCroppedCanvas().toDataURL() })
+
   }
   handleFileChange(e) {
-    console.log(e.target.files[0])
+    let file = e.target.files[0];
+    let source = (window.URL ? URL : webkitURL).createObjectURL(file)
+
+    this.props.context.setState({image: source})
   }
   render() {
     return (
@@ -42,14 +43,17 @@ export default class ImageCropperComponent extends Component {
         <input type="file" className="form-control" onChange={this.handleFileChange.bind(this)}/>
         <Cropper
           ref='cropper'
-          src={this.state.image}
-          style={{width: '100%', height: '220px', paddingTop: '20px', paddingBottom: '20px'}}
-          cropBoxResizable={true}
+          src={this.props.context.state.image}
+          id="cropper"
+          style={{width: '100%', height: '360px', marginTop: '20px', marginBottom:'20px'}}
+          cropBoxResizable={false}
+          minCropBoxWidth={320}
+          minCropBoxHeight={180}
           aspectRatio={320 / 180}
-          minContainerWidth={320}
-          minContainerHeight={180}
-          viewMode={0}
-          guides={false}
+          minContainerWidth={550}
+          minContainerHeight={360}
+          viewMode={1}
+          guides={true}
           crop={this._crop.bind(this)} />
         <button
           onClick={this.saveCrop.bind(this)}

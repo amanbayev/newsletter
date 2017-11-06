@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 
 import CKEditor from "react-ckeditor-component";
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import '/client/imports/momentru.js'
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default class CreateNewsModal extends Component {
   constructor(props) {
@@ -8,10 +12,16 @@ export default class CreateNewsModal extends Component {
     this.updateContent = this.updateContent.bind(this);
     this.state = {
       name: '',
-      date: '',
+      date: moment(),
       content: 'content',
       url: ''
     }
+    moment.locale('ru')
+  }
+  handleDateChange(date) {
+    this.setState({
+      date: date
+    })
   }
   updateContent(newContent) {
     this.setState({
@@ -34,7 +44,9 @@ export default class CreateNewsModal extends Component {
   }
   handleSubmit(e) {
     e.preventDefault();
+    let newNews = this.state
     console.log("submit")
+    console.log(newNews)
   }
   render() {
     return (
@@ -49,11 +61,22 @@ export default class CreateNewsModal extends Component {
               <form onSubmit={this.handleSubmit.bind(this)}>
                 <div className="form-group">
                   <label>Название новости</label>
-                  <input className="form-control" placeholder="Название" />
+                  <input className="form-control" placeholder="Название" value={this.state.name}
+                    onChange={(e)=> {this.setState({name: e.target.value})}}/>
                 </div>
                 <div className="form-group">
                   <label>Дата</label>
-                  <input className="form-control" placeholder="Дата" />
+                  <DatePicker
+                    selected={this.state.date}
+                    className="form-control"
+                    dateFormat="DD.MM.YYYY"
+                    onChange={this.handleDateChange.bind(this)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Ссылка внешнаяя (необязательно)</label>
+                  <input className="form-control" type="text" placeholder="URL"
+                    value={this.state.url} onChange={(e)=>{this.setState({url: e.target.value})}} />
                 </div>
                 <div className="form-group">
                   <label>Текст новости</label>

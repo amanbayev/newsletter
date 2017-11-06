@@ -3,7 +3,7 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 import NotFoundComponent from '/client/imports/components/NotFoundComponent'
-import CreateNewsModal from '/client/imports/components/CreateNewsModal'
+import CreateNewsModalContainer from '/client/imports/containers/CreateNewsModalContainer'
 
 export default class SingleNewsletterComponent extends Component {
   constructor(props) {
@@ -65,7 +65,7 @@ export default class SingleNewsletterComponent extends Component {
                     <button className="btn btn-primary btn-lg">Сохранить изменения &nbsp;<i className="fa fa-save"></i></button>
                   </div>
                 </div>
-                <CreateNewsModal />
+                <CreateNewsModalContainer />
               </div>
             </div>
           </div>

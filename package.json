@@ -12,6 +12,7 @@
     "react": "^16.0.0",
     "react-addons-pure-render-mixin": "^15.6.2",
     "react-ckeditor-component": "^1.0.7",
+    "react-cropper": "^1.0.0",
     "react-datepicker": "^0.59.0",
     "react-dom": "^16.0.0",
     "react-router-dom": "^4.2.2"

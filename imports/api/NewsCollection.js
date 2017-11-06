@@ -5,6 +5,10 @@ import { Images } from './NewsImagesCollection.js'
 
 if (Meteor.isServer) {
   // This code only runs on the server
+  const getRandomInt = (min, max) => {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
   Meteor.publish('News', function() {
     return News.find();
   });
@@ -12,24 +16,18 @@ if (Meteor.isServer) {
   Meteor.methods({
     'createNews':function(newNewsItem){
       newNewsItem.active = true;
-
-      const upload = Images.insert({
-        file: newNewsItem.image,
-        streams: 'dynamic',
-        chunkSize: 'dynamic'
-      }, false);
-
-      upload.on('end', function (error, fileObj) {
+      Images.write(newNewsItem.image, {
+        fileName: newNewsItem.name + getRandomInt(0,500) + '.png',
+        type: 'image/png'
+      }, function (error, fileRef) {
         if (error) {
-          console.log('Error during upload: ' + error);
-          return error;
+          throw error;
         } else {
-          console.log('File "' + fileObj.name + '" successfully uploaded');
-          return News.insert(newNewsItem);
+          newNewsItem.image = fileRef._id;
+          News.insert(newNewsItem);
         }
       });
-
-      upload.start();
+      return true;
     },
     'deleteNews':function(newsletterId) {
       News.update({_id:newsletterId}, {$set:{

@@ -9,6 +9,18 @@ export default class SingleNewsletterComponent extends Component {
   constructor(props) {
     super(props)
   }
+  renderNewsForNewsletter() {
+    let news = this.props.news
+    let images = this.props.images
+    return news.map((current, index) => (
+      <tr className="gradeX" key={ index }>
+        <td>{index + 1}</td>
+        <td>{current.name}</td>
+        <td>{current.content}</td>
+        <td><img src="assets/app/uploads/Images/7WxBpZpY5iZvcbGP6.png"/></td>
+      </tr>
+    ))
+  }
   renderNewsletter() {
     let newsletter = this.props.singleNewsletter
     if (!this.props.loading) {
@@ -44,12 +56,7 @@ export default class SingleNewsletterComponent extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Test</td>
-                      <td>Lorem ipsum dolor amet.</td>
-                      <td><img src="http://via.placeholder.com/320x180"/></td>
-                    </tr>
+                    {this.renderNewsForNewsletter()}
                   </tbody>
                 </table>
               </div>
@@ -65,7 +72,7 @@ export default class SingleNewsletterComponent extends Component {
                     <button className="btn btn-primary btn-lg">Сохранить изменения &nbsp;<i className="fa fa-save"></i></button>
                   </div>
                 </div>
-                <CreateNewsModalContainer />
+                <CreateNewsModalContainer newsletterName={newsletter.name} />
               </div>
             </div>
           </div>

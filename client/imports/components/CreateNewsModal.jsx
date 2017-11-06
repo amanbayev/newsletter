@@ -14,7 +14,7 @@ export default class CreateNewsModal extends Component {
     this.updateContent = this.updateContent.bind(this);
     this.state = {
       name: '',
-      date: moment(),
+      newsDate: moment(),
       content: 'Описание новости',
       image: '',
       url: ''
@@ -23,7 +23,7 @@ export default class CreateNewsModal extends Component {
   }
   handleDateChange(date) {
     this.setState({
-      date: date
+      newsDate: date
     })
   }
   updateContent(newContent) {
@@ -47,17 +47,31 @@ export default class CreateNewsModal extends Component {
   handleSubmit(e) {
     e.preventDefault();
     let newNews = this.state
-    newNews.date = moment(this.state.date).format('DD.MM.YYYY')
     console.log("submit")
-    console.log(newNews)
-    Meteor.call("createNews", newNews, function(error, result){
+    newNews.newsDate = this.state.newsDate.format('DD.MM.YYYY')
+    newNews.newsletterName = this.props.newsletterName
+    // console.log(newNews.image)
+    Meteor.call("createNews", newNews, function(error){
       if(error){
         console.log("error", error);
-      }
-      if(result){
-         console.log(result)
+      } else {
+        Bert.alert({
+          title: 'Новость добавлена',
+          message: 'Вы успешно создали новость, '+Meteor.user().profile.first_name,
+          type: 'success',
+          style: 'growl-top-right',
+          icon: 'fa-user'
+        });
       }
     });
+    this.setState({
+      name: '',
+      newsDate: moment(),
+      content: 'Описание новости',
+      image: '',
+      url: ''
+    })
+    $('#myModal').modal('hide');
   }
   render() {
     return (
@@ -78,7 +92,7 @@ export default class CreateNewsModal extends Component {
                 <div className="form-group">
                   <label>Дата</label>
                   <DatePicker
-                    selected={this.state.date}
+                    selected={this.state.newsDate}
                     className="form-control"
                     dateFormat="DD.MM.YYYY"
                     onChange={this.handleDateChange.bind(this)}

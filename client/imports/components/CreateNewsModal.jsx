@@ -6,6 +6,8 @@ import moment from 'moment';
 import '/client/imports/momentru.js'
 import 'react-datepicker/dist/react-datepicker.css';
 
+import ImageCropperComponent from '/client/imports/components/ImageCropperComponent'
+
 export default class CreateNewsModal extends Component {
   constructor(props) {
     super(props)
@@ -14,6 +16,7 @@ export default class CreateNewsModal extends Component {
       name: '',
       date: moment(),
       content: 'content',
+      image: '',
       url: ''
     }
     moment.locale('ru')
@@ -38,7 +41,6 @@ export default class CreateNewsModal extends Component {
   onBlur(evt){
     // window blurred
   }
-
   afterPaste(evt){
     // after pase happened
   }
@@ -74,6 +76,9 @@ export default class CreateNewsModal extends Component {
                   />
                 </div>
                 <div className="form-group">
+                  <ImageCropperComponent />
+                </div>
+                <div className="form-group">
                   <label>Ссылка внешнаяя (необязательно)</label>
                   <input className="form-control" type="text" placeholder="URL"
                     value={this.state.url} onChange={(e)=>{this.setState({url: e.target.value})}} />
@@ -96,6 +101,8 @@ export default class CreateNewsModal extends Component {
                 </div>
               </form>
             </div>
+
+
           </div>
         </div>
       </div>

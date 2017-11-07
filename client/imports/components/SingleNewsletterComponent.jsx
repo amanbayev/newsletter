@@ -16,8 +16,8 @@ export default class SingleNewsletterComponent extends Component {
       <tr className="gradeX" key={ index }>
         <td>{index + 1}</td>
         <td>{current.name}</td>
-        <td>{current.content}</td>
-        <td><img src="assets/app/uploads/Images/7WxBpZpY5iZvcbGP6.png"/></td>
+        <td><div dangerouslySetInnerHTML={{__html: current.content}}/></td>
+        <td>{images[index].path}</td>
       </tr>
     ))
   }

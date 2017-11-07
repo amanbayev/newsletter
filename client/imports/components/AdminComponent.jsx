@@ -7,14 +7,18 @@ import {
 } from 'react-router-dom'
 
 import Authenticated from '/client/imports/components/Authenticated'
+import Menu from '/client/imports/components/Menu'
+import Dashboard from '/client/imports/components/Dashboard'
+import NotFoundComponent from '/client/imports/components/NotFoundComponent'
+import AddNewsComponent from '/client/imports/components/AddNewsComponent'
 
-import Menu from '/client/imports/components/Menu';
-
-import UsersContainer from '/client/imports/containers/UsersContainer';
-import Dashboard from '/client/imports/components/Dashboard';
+// containers
+import UsersContainer from '/client/imports/containers/UsersContainer'
 import NewsletterContainer from '/client/imports/containers/NewsletterContainer'
 import SingleNewsletterContainer from '/client/imports/containers/SingleNewsletterContainer'
-import NotFoundComponent from '/client/imports/components/NotFoundComponent'
+import NewsListContainer from '/client/imports/containers/NewsListContainer'
+import SingleNewsContainer from '/client/imports/containers/SingleNewsContainer'
+
 
 export default class AdminComponent extends Component {
   constructor(props) {
@@ -43,6 +47,9 @@ export default class AdminComponent extends Component {
             <Route exact path="/admin/users" component={UsersContainer} />
             <Route exact path="/admin/newsletters" component={NewsletterContainer } />
             <Route exact path="/admin/newsletters/:newsletterid" component={SingleNewsletterContainer } />
+            <Route exact path="/admin/news" component={ NewsListContainer } />
+            <Route exact path="/admin/news/create" component={ AddNewsComponent } />
+            <Route exact path="/admin/news/:newsid" component={ SingleNewsContainer }/>
             <Route component={ NotFoundComponent } />
           </Switch>
         </div>{/* /.container */}
